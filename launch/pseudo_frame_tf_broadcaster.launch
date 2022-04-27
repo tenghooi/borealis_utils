@@ -1,0 +1,13 @@
+<launch>
+    <node pkg="borealis_utils" type="pseudo_frame_tf_broadcaster" name="pseudo_lidar_frame_tf" output="screen">
+
+        <!-- Set relative frame names -->
+        <param name="pseudo_child_frame_name" value="pseudo_lidar_frame"/>
+        <param name="pseudo_parent_frame_name" value="camera_init"/>
+
+        <!-- subscribe lidar pose -->
+        <remap from="~lidar_pose" to="/aft_mapped_to_init"/>
+
+    </node>
+
+</launch>
