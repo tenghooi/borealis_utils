@@ -29,7 +29,7 @@ def generateLaserScan(pointList, n, t):
     scanHeader = Header()
     scanHeader.seq = n
     scanHeader.stamp = t
-    scanHeader.frame_id = '/map'
+    scanHeader.frame_id = '/os_sensor'
     # Generate point cloud
     points = []
     for i in range(l):
@@ -55,8 +55,8 @@ def publisher1():
 	n = 1
 	t0 = rospy.Time.now().to_sec()
 
-	dest_fwd = rospy.get_param("~dest_fwd", 0)
-	dest_bwd = rospy.get_param("~dest_bwd", 0)
+	dest_fwd = rospy.get_param("~dest_fwd", 2)
+	dest_bwd = rospy.get_param("~dest_bwd", -2)
 	velocity = rospy.get_param("~velocity", 0)
 
 	p = PoseWithCovarianceStamped()
