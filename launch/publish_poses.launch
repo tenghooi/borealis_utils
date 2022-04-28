@@ -1,0 +1,22 @@
+<launch>
+    <node pkg="borealis_utils" type="publish_poses.py" name="pose_A" output="screen">
+
+        <!-- Set relative frame names -->
+        <param name="pose_x" value="1"/>
+        <param name="pose_y" value="1"/>
+
+        <!-- subscribe lidar pose -->
+        <remap from="~pose" to="pose_A"/>
+
+    </node>
+    
+    <node pkg="borealis_utils" type="publish_poses.py" name="pose_B" output="screen">
+
+        <!-- Set relative frame names -->
+        <param name="pose_x" value="0"/>
+        <param name="pose_y" value="0"/>
+
+
+    </node>
+
+</launch>
