@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 
 # Copyright (c) 2022, Teng Hooi Chan, Singapore University of Technology and Design
 # All rights reserved.
@@ -31,19 +32,85 @@
 ###########################################################
 # This ROS package subscribes to poses of an object over  #
 # a pre-defined amount of time and calculate a mean value #
-# from the accumulated poses.                             #
+# from the accumulated poses.                             #  
+#                                                         #
+# IMPORTANT: This module requires stamped message type    #
 #                                                         #
 # One example application is:                             #
 # It can be used to find initial offset of a pose of an   #
 # object from its origin.                                 #
 ###########################################################
 
-#!/usr/bin/env python
-
 import rospy
+from rospy.exceptions import ROSInterruptException
 
 from std_msgs.msg import Header
 
-from geometry_msgs.msg import Point, Point32, Twist, Quaternion
-from geometry_msgs.msg import Pose, PoseStamped
+from geometry_msgs.msg import Point, Pose, PoseStamped
 from geometry_msgs.msg import PoseWithCovariance, PoseWithCovarianceStamped
+
+from nav_msgs.msg import Odometry
+
+import math
+
+def CalculateMeanPose(poses, mean_pose):
+
+    sum_x = 0
+    sum_y = 0
+    sum_z = 0
+    total_pose_count = len(poses)
+
+    for pose in poses:
+        sum_y += pose.pose.position.y
+        sum_x += pose.pose.position.x
+        sum_z += pose.pose.position.z
+
+    mean_pose.x = sum_x / total_pose_count
+    mean_pose.y = sum_y / total_pose_count
+    mean_pose.z = sum_z / total_pose_count
+
+    return mean_pose
+
+def MeanPoseCallBack(msg, callback_args):
+
+    time_frame_period = callback_args[0]
+    mean_pose = callback_args[1]
+
+    if len(poses) < 1:
+        start_time = msg.header.stamp
+
+    else:
+        start_time = poses[0].header.stamp
+    
+    current_time = msg.header.stamp
+
+    time_pass = current_time - start_time
+
+    if time_pass < rospy.Duration.from_sec(time_frame_period):
+        poses.append(msg)
+        mean_pose = CalculateMeanPose(poses, mean_pose)
+
+    print(mean_pose, len(poses)) 
+    print(time_pass.to_sec())
+
+def SubscribePoseMsg():
+
+    rospy.init_node("time_mean_pose", anonymous=True)
+
+    time_frame_period = rospy.get_param("~time_frame_secs", 5.0)
+    msg_type = PoseStamped
+
+    rospy.Subscriber("pose", msg_type, MeanPoseCallBack, (time_frame_period, mean_pose))
+
+    rospy.spin()
+
+if __name__ == '__main__':
+
+    poses = []
+    mean_pose = Point()
+
+    try:
+        SubscribePoseMsg()
+
+    except rospy.ROSInterruptException:
+        pass
