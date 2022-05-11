@@ -41,3 +41,9 @@
 #!/usr/bin/env python
 
 import rospy
+
+from std_msgs.msg import Header
+
+from geometry_msgs.msg import Point, Point32, Twist, Quaternion
+from geometry_msgs.msg import Pose, PoseStamped
+from geometry_msgs.msg import PoseWithCovariance, PoseWithCovarianceStamped
