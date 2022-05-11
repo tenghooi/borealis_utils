@@ -1,0 +1,11 @@
+<launch>
+
+    <node pkg="borealis_utils" type="time_mean_pose.py" name="mean_pose" output="screen">
+
+        <param name="time_frame_secs" value="20.0" />
+
+        <remap from="pose" to="vrpn_client_node/BorealisCoax/pose" />
+
+    </node>
+
+</launch>
