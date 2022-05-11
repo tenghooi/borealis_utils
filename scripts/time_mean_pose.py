@@ -45,7 +45,7 @@
 import rospy
 from rospy.exceptions import ROSInterruptException
 
-from std_msgs.msg import Header
+from std_msgs.msg import Header, Time
 
 from geometry_msgs.msg import Point, Pose, PoseStamped
 from geometry_msgs.msg import PoseWithCovariance, PoseWithCovarianceStamped
@@ -76,10 +76,9 @@ def MeanPoseCallBack(msg, callback_args):
 
     time_frame_period = callback_args[0]
     mean_pose = callback_args[1]
-
+    
     if len(poses) < 1:
         start_time = msg.header.stamp
-
     else:
         start_time = poses[0].header.stamp
     
@@ -92,7 +91,7 @@ def MeanPoseCallBack(msg, callback_args):
         mean_pose = CalculateMeanPose(poses, mean_pose)
 
     print(mean_pose, len(poses)) 
-    print(time_pass.to_sec())
+    print("Time passed: ", time_pass.to_sec())
 
 def SubscribePoseMsg():
 
@@ -101,8 +100,8 @@ def SubscribePoseMsg():
     time_frame_period = rospy.get_param("~time_frame_secs", 5.0)
     msg_type = PoseStamped
 
-    rospy.Subscriber("pose", msg_type, MeanPoseCallBack, (time_frame_period, mean_pose))
-
+    rospy.Subscriber("pose", msg_type, MeanPoseCallBack, (time_frame_period, mean_pose), 100)
+    
     rospy.spin()
 
 if __name__ == '__main__':
