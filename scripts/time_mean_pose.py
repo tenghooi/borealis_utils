@@ -41,9 +41,66 @@
 #!/usr/bin/env python
 
 import rospy
+from rospy.exceptions import ROSInterruptException
 
 from std_msgs.msg import Header
 
-from geometry_msgs.msg import Point, Point32, Twist, Quaternion
-from geometry_msgs.msg import Pose, PoseStamped
+from geometry_msgs.msg import Point, Pose, PoseStamped
 from geometry_msgs.msg import PoseWithCovariance, PoseWithCovarianceStamped
+
+from nav_msgs.msg import Odometry
+
+import statistics
+import math
+
+def CalculateMeanPose(poses):
+
+    sum_x = 0
+    sum_y = 0
+    sum_z = 0
+    total_pose_count = len(poses)
+
+    for pose in poses:
+        sum_x += pose.point.x
+        sum_y += pose.point.y
+        sum_z += pose.point.z
+
+    mean_pose = Point()
+    mean_pose.x = sum_x / total_pose_count
+    mean_pose.y = sum_y / total_pose_count
+    mean_pose.z = sum_z / total_pose_count
+
+    return mean_pose
+
+def PoseAccumulator(msg, start_time):
+
+    current_time = rospy.Time.now()
+
+    time_pass = current_time - start_time
+
+    mean_pose = Point()
+
+    if time_pass < rospy.Time.from_sec(10.0):
+        poses.append(msg.pose.point)
+        mean_pose = CalculateMeanPose(poses)
+
+    print(mean_pose) 
+
+def SubscribePoseMsg():
+
+    rospy.init_node("time_mean_pose", anonymous=True)
+
+    start_time = rospy.Time.now()
+    rospy.Subscriber("pose", PoseStamped, PoseAccumulator, start_time)
+
+    rospy.spin()
+
+if __name__ == '__main__':
+
+    poses = []
+
+    try:
+        SubscribePoseMsg()
+
+    except rospy.ROSInterruptException:
+        pass
