@@ -1,0 +1,11 @@
+<launch>
+
+    <node pkg="borealis_utils" type="path_visualization.py" name="path_visualizer" output="screen">
+
+        <!--param name="time_frame_secs" value="22.0" /-->
+
+        <!--remap from="pose" to="vrpn_client_node/BorealisCoax/pose" /-->
+
+    </node>
+
+</launch>
