@@ -1,0 +1,34 @@
+<launch>
+    <node pkg="borealis_utils" type="pseudo_frame_broadcaster" name="pseudo_lidar_frame_br" output="screen">
+
+        <param name="pseudo_child_frame_name" value="pseudo_lidar_frame" />
+        <param name="pseudo_parent_frame_name" value="odom" />
+        <param name="target_frame_name" value="uav1/camera_init" />
+        <param name="source_frame_name" value="uav1/aft_mapped" />
+
+
+    </node>
+
+    <node pkg="borealis_utils" type="pseudo_frame_broadcaster" name="pseudo_camera_frame_br" output="screen">
+
+        <param name="pseudo_child_frame_name" value="pseudo_camera_frame" />
+        <param name="pseudo_parent_frame_name" value="odom" />
+        <param name="target_frame_name" value="uav1/t265_odom_frame" />
+        <param name="source_frame_name" value="uav1/t265_pose_frame" />
+
+    </node>
+
+    <node pkg="borealis_utils" type="pseudo_frame_broadcaster" name="pseudo_opti_frame_br" output="screen">
+
+        <param name="pseudo_child_frame_name" value="pseudo_opti_frame" />
+        <param name="pseudo_parent_frame_name" value="odom" />
+        <param name="target_frame_name" value="world" />
+        <param name="source_frame_name" value="BorealisCoax" />
+
+        <param name="offset_x" value="-0.0345924145871" />
+        <param name="offset_y" value="0.0138743830625" />
+        <param name="offset_z" value="-0.272640327485" />
+
+    </node>    
+
+</launch>

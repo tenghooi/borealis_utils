@@ -54,10 +54,10 @@ target_link_libraries(pseudo_frame_tf_broadcaster
                       ${catkin_LIBRARIES}
                       )
 
-add_executable(pseudo_lidar_frame_broadcaster 
-               src/pseudo_lidar_frame_broadcaster.cpp
+add_executable(pseudo_frame_broadcaster 
+               src/pseudo_frame_broadcaster.cpp
                )
-target_link_libraries(pseudo_lidar_frame_broadcaster
+target_link_libraries(pseudo_frame_broadcaster
                       ${catkin_LIBRARIES}
                       )
 
