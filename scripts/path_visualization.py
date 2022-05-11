@@ -12,7 +12,7 @@ from collections import deque
 
 def PoseStamped2Path(msg):
 
-    # msg.header.frame_id = "uav1/t265_odom_frame"
+    msg.header.frame_id = "odom"
     opti_track_msg_queue.append(msg)
 
     pub = rospy.Publisher('opti_track_path', Path, queue_size=50)
@@ -34,7 +34,7 @@ def LidarOdometry2Path(msg):
     pose_msg.header = msg.header
     #pose_msg.header.frame_id = "camera_init"
     # pose_msg.header.frame_id = "uav1/t265_odom_frame"
-    pose_msg.header.frame_id = "world"
+    pose_msg.header.frame_id = "odom"
     pose_msg.pose = msg.pose.pose
 #TODO: ARITHMETIC FOR TRANSLATING POSE_MSG.POSE TO ORIGIN
     #pose_msg.pose.position.x -= 1.90293264389
@@ -61,7 +61,7 @@ def CameraOdometry2Path(msg):
     pose_msg.header = msg.header
     #pose_msg.header.frame_id = "camera_init"
     # pose_msg.header.frame_id = "uav1/t265_odom_frame"
-    pose_msg.header.frame_id = "world"
+    pose_msg.header.frame_id = "odom"
     pose_msg.pose = msg.pose.pose
 
     t265_pose_msg_queue.append(pose_msg)
@@ -78,7 +78,7 @@ def SubsAndVisualizePath():
 
     rospy.init_node('path_visualizer', anonymous=True)
 
-    rospy.Subscriber("/vrpn_client_node/BorealisCoax/pose", PoseStamped, PoseStamped2Path, queue_size=75)
+    rospy.Subscriber("/vrpn_client_node/BorealisCoax/pose", PoseStamped, PoseStamped2Path, queue_size=100)
     rospy.Subscriber("/uav1/aft_mapped_to_init", Odometry, LidarOdometry2Path, queue_size=10)
     rospy.Subscriber("/uav1/t265/odom/sample", Odometry, CameraOdometry2Path, queue_size=50)
 
@@ -89,7 +89,7 @@ def SubsAndVisualizePath():
 # Create nav_msgs/Path with geometry_msgs/PoseStamped and nav_msgs/Odometry
 if __name__ == '__main__':
     
-    opti_track_msg_queue = deque(maxlen = 750)
+    opti_track_msg_queue = deque(maxlen = 700)
     lidar_pose_msg_queue = deque(maxlen = 30)
     t265_pose_msg_queue = deque(maxlen = 500)
 
