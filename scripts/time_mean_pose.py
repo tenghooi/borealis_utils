@@ -34,7 +34,8 @@
 # a pre-defined amount of time and calculate a mean value #
 # from the accumulated poses.                             #  
 #                                                         #
-# IMPORTANT: This module requires stamped message type    #
+# IMPORTANT: This module requires pose and stamped        #
+#            message type.                                # 
 #                                                         #
 # One example application is:                             #
 # It can be used to find initial offset of a pose of an   #
