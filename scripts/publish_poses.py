@@ -46,7 +46,7 @@ def generateLaserScan(pointList, n, t):
 
 def publisher1():
 
-	rospy.init_node('pose_publisher', anonymous=False)
+	rospy.init_node('pose_publisher', anonymous=True)
 	scanPublisher = rospy.Publisher('~pointcloud', PointCloud, queue_size=10)
 	publi = rospy.Publisher('~pose', PoseWithCovarianceStamped, queue_size=1)
     #pub = rospy.Publisher('~circle', Twist, queue_size=10)
