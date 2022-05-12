@@ -15,7 +15,6 @@ from visualization_msgs.msg import Marker
 
 def move_fwd(velocity, t0, current_pose):
 	t1 = rospy.Time.now().to_sec()
-	print(t0)
 	new_pose = velocity*(t1 - t0) + current_pose
 	current_pose = new_pose
 	t0 = t1
@@ -49,8 +48,8 @@ def publisher1():
 	rospy.init_node('pose_publisher', anonymous=True)
 	scanPublisher = rospy.Publisher('~pointcloud', PointCloud, queue_size=10)
 	publi = rospy.Publisher('~pose', PoseWithCovarianceStamped, queue_size=1)
-    #pub = rospy.Publisher('~circle', Twist, queue_size=10)
-	rate = rospy.Rate(50) # Hz
+
+	rate = rospy.Rate(20) # Hz
 
 	n = 1
 	t0 = rospy.Time.now().to_sec()
@@ -83,20 +82,20 @@ def publisher1():
 		elif(p.pose.pose.position.x <= dest_bwd and velocity < 0):
 			velocity = abs(velocity)
 		
-		for i in np.arange(-1,1.1,0.5):
-			for j in np.arange(-1,1.1,0.5):
-				for k in np.arange(-1,1.1,0.5):
-					pointList[0].append(p.pose.pose.position.x + i)
-					pointList[1].append(p.pose.pose.position.y + j)
-					pointList[2].append(p.pose.pose.position.z + k)
-		laserScan = generateLaserScan(pointList, n, rospy.Time.now())
+		# for i in np.arange(-1,1.1,0.5):
+		# 	for j in np.arange(-1,1.1,0.5):
+		# 		for k in np.arange(-1,1.1,0.5):
+		# 			pointList[0].append(p.pose.pose.position.x + i)
+		# 			pointList[1].append(p.pose.pose.position.y + j)
+		# 			pointList[2].append(p.pose.pose.position.z + k)
+		# laserScan = generateLaserScan(pointList, n, rospy.Time.now())
 			
-		scanPublisher.publish(laserScan)
-		pointList[0] = []
-		pointList[1] = []
-		pointList[2] = []
+		# scanPublisher.publish(laserScan)
+		# pointList[0] = []
+		# pointList[1] = []
+		# pointList[2] = []
 		
-		print(velocity)
+		# print(velocity)
 
 		n += 1
 		publi.publish(p)
