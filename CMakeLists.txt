@@ -66,4 +66,11 @@ add_executable(pseudo_pointcloud_tf
                )
 target_link_libraries(pseudo_pointcloud_tf
                       ${catkin_LIBRARIES}
-                      )                      
+                      )      
+                      
+add_executable(shift_map
+              src/shift_map.cpp
+              )
+target_link_libraries(shift_map
+                      ${catkin_LIBRARIES}
+                      )                         
