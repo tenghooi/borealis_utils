@@ -46,8 +46,6 @@ int main(int argc, char** argv)
     ros::NodeHandle node("~");
 
     PointCloudMapTransformer map_transformer_node(node);
-
-    ROS_INFO("Initialized map_transformer node.");
     
     ros::spin();
 
